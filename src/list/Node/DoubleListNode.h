@@ -6,13 +6,15 @@
 #define LIST_DOUBLELISTNODE_H
 
 template<class T>
-class Node {
+class DoubleListNode {
 public:
-    explicit Node(T value);
+    explicit DoubleListNode(T value);
+
+    DoubleListNode();
 
     T value;
-    Node *previous_node;
-    Node *next_node;
+    DoubleListNode *previous_node;
+    DoubleListNode *next_node;
 
 //    bool operator==(const DoubleListNode doubleListNode);
 
@@ -28,17 +30,17 @@ public:
 //}
 
 template<class T>
-void Node<T>::set_value(T t) {
+void DoubleListNode<T>::set_value(T t) {
     this->value = value;
 }
 
 template<class T>
-T &Node<T>::get_value() {
+T &DoubleListNode<T>::get_value() {
     return this->value;
 }
 
 template<class T>
-Node<T>::Node(T value) {
+DoubleListNode<T>::DoubleListNode(T value) {
     this->next_node = nullptr;
     this->previous_node = nullptr;
     this->value = value;

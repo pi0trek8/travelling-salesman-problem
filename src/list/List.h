@@ -13,8 +13,8 @@ template<class T>
 class List {
 
 private:
-    Node<T> *head;
-    Node<T> *tail;
+    DoubleListNode<T> *head;
+    DoubleListNode<T> *tail;
     int list_size{};
 
 public:
@@ -65,7 +65,7 @@ T List<T>::operator[](int index) {
     if (index < 0 || index >= list_size) {
         throw invalid_argument("index: " + to_string(index) + " is out of bounds for length: " + to_string(list_size));
     }
-    Node<T> *temporary_node = head;
+    DoubleListNode<T> *temporary_node = head;
 
     for (int i = 0; i < index; i++) {
         temporary_node = temporary_node->next_node;
@@ -79,14 +79,14 @@ template<class T>
 void List<T>::push_back(T element) {
     // checking if head has been initialized
     if (head == nullptr) {
-        head = new Node<T>(element);
+        head = new DoubleListNode<T>(element);
         tail = head;
         list_size++;
         return;
     }
 
-    Node<T> *temporary_node = tail;
-    tail = new Node<T>(element);
+    DoubleListNode<T> *temporary_node = tail;
+    tail = new DoubleListNode<T>(element);
     temporary_node->next_node = tail;
     tail->previous_node = temporary_node;
     list_size++;
@@ -95,14 +95,14 @@ void List<T>::push_back(T element) {
 template<class T>
 void List<T>::push_front(T element) {
     if (head == nullptr) {
-        head = new Node(element);
+        head = new DoubleListNode(element);
         tail = head;
         list_size++;
         return;
     }
 
     auto *temporary = head;
-    head = new Node(element);
+    head = new DoubleListNode(element);
     head->next_node = temporary;
     temporary->previous_node = head;
     list_size++;
@@ -121,7 +121,7 @@ void List<T>::insert(T element, int index) {
         return;
     }
     // initialize new node
-    auto *new_node = new Node(element);
+    auto *new_node = new DoubleListNode(element);
 
     // first case index == 0
     if (index == 0) {
@@ -143,7 +143,7 @@ void List<T>::insert(T element, int index) {
         return;
     }
 
-    Node<T> *temporary_node;
+    DoubleListNode<T> *temporary_node;
 
     // check if index is in first or second half
     // and based on that starting iterating from first or last node
@@ -191,7 +191,7 @@ void List<T>::remove(int index) {
 
     // default case:
 
-    Node<T> *temporary_node;
+    DoubleListNode<T> *temporary_node;
 
     // check if index is in first or second half
     // and based on that starting iterating from first or last node
@@ -261,7 +261,7 @@ void List<T>::pop_back() {
         return;
     }
     //default case
-    Node<T> *temporary_node = tail;
+    DoubleListNode<T> *temporary_node = tail;
 
     temporary_node->previous_node->next_node = nullptr;
     tail = tail->previous_node;
@@ -273,7 +273,7 @@ template<class T>
 void List<T>::clear() {
     // iterating throughout list and removing node objects one by one
     auto *temporary_node = head;
-    Node<T> *node_to_delete;
+    DoubleListNode<T> *node_to_delete;
     for (int i = 0; i < list_size; i++) {
         node_to_delete = temporary_node;
         temporary_node = temporary_node->next_node;
@@ -291,7 +291,7 @@ void List<T>::clear() {
 template<class T>
 bool List<T>::find(T element) {
     // searching through structure to meet search criteria
-    Node<T> *temporary_node = head;
+    DoubleListNode<T> *temporary_node = head;
     while (temporary_node != nullptr) {
         if (temporary_node->value == element) {
             return true;
@@ -303,7 +303,7 @@ bool List<T>::find(T element) {
 
 template<class T>
 void List<T>::print() {
-    Node<T> *temporary_node = head;
+    DoubleListNode<T> *temporary_node = head;
 
     if (head == nullptr) {
         cout << "list is empty" << endl;
@@ -312,7 +312,7 @@ void List<T>::print() {
     }
 
     while (temporary_node != nullptr) {
-        cout << temporary_node->value << " ";
+        cout << temporary_node->value.destination_city << " ";
         temporary_node = temporary_node->next_node;
     }
     cout << endl;
@@ -320,56 +320,6 @@ void List<T>::print() {
 
 template<class T>
 void List<T>::swap(int first_index, int second_index) {
-//
-//    if (first_index < 0 || first_index >= list_size || second_index >= list_size || second_index < 0) {
-//        cout << "Index out of bounds exception" << endl;
-//        return;
-//    }
-//
-//    if (first_index == second_index) {
-//        return;
-//    }
-//
-//    // Find the nodes at the first_index-th and last_index-th positions
-//    DoubleListNode<T> *previous_node_first_index = nullptr;
-//    DoubleListNode<T> *node_first_index = head;
-//    for (int i = 0; i < first_index; i++) {
-//        previous_node_first_index = node_first_index;
-//        node_first_index = node_first_index->next_node;
-//    }
-//
-//    DoubleListNode<T> *previous_node_second_index = nullptr;
-//    DoubleListNode<T> *node_second_index = head;
-//    for (int i = 0; i < second_index; i++) {
-//        previous_node_second_index = node_second_index;
-//        node_second_index = node_second_index->next_node;
-//    }
-//
-//    // Swap the nodes
-//    if (previous_node_first_index != nullptr) {
-//        previous_node_first_index->next_node = node_second_index;
-//        node_second_index->previous_node = previous_node_first_index;
-//    } else {
-//        head = node_second_index;
-//    }
-//
-//    if (previous_node_second_index != nullptr) {
-//        previous_node_second_index->next_node = node_first_index;
-//        node_first_index->previous_node = previous_node_second_index;
-//    } else {
-//        head = node_first_index;
-//    }
-//
-//    DoubleListNode<T> *temp = node_first_index->next_node;
-//    node_first_index->next_node = node_second_index->next_node;
-//    if (node_second_index->next_node != nullptr) {
-//        node_second_index->next_node->previous_node = node_first_index;
-//    }
-//
-//    node_second_index->next_node = temp;
-//    if (temp != nullptr) {
-//        temp->previous_node = node_second_index;
-//    }
     if (first_index < 0 || first_index >= list_size || second_index < 0 || second_index >= list_size) {
         cout << "Index out of bounds exception" << endl;
         return;
@@ -379,19 +329,20 @@ void List<T>::swap(int first_index, int second_index) {
         return;
     }
 
-    Node<T> *node_first_index = head;
+    DoubleListNode<T> *node_first_index = head;
     for (int i = 0; i < first_index; i++) {
-        node_first_index = node_first_index->next_node;
+        if (node_first_index != nullptr)
+            node_first_index = node_first_index->next_node;
     }
 
-    Node<T> *node_second_index = head;
+    DoubleListNode<T> *node_second_index = head;
     for (int i = 0; i < second_index; i++) {
         node_second_index = node_second_index->next_node;
     }
 
     T temp_data = node_first_index->get_value();
-    node_first_index->get_value() = node_second_index->value;
-    node_second_index->get_value() = temp_data;
+    node_first_index->set_value(node_second_index->get_value());
+    node_second_index->set_value(temp_data);
 }
 
 template<class T>
@@ -399,7 +350,7 @@ T List<T>::get(int index) {
     if (index < 0 || index >= list_size) {
         throw invalid_argument("index: " + to_string(index) + " is out of bounds for length: " + to_string(list_size));
     }
-    Node<T> *temporary_node;
+    DoubleListNode<T> *temporary_node;
 
     // iterating based on index value: from beginning, from end
     if (index < list_size / 2) {
@@ -438,9 +389,9 @@ List<T>::List() {
 
 template<class T>
 List<T>::~List() {
-    Node<T> *current = head;
+    DoubleListNode<T> *current = head;
     while (current != nullptr) {
-        Node<T> *next = current->next_node;
+        DoubleListNode<T> *next = current->next_node;
         delete current;
         current = next;
     }

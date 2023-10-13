@@ -11,10 +11,10 @@
 template<typename T>
 class Iterator {
 private:
-    Node<T>* current;
+    DoubleListNode<T>* current;
 
 public:
-    explicit Iterator(Node<T>* node) : current(node) {}
+    explicit Iterator(DoubleListNode<T>* node) : current(node) {}
 
     T operator*() const {
         return current->value;
