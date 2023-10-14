@@ -14,4 +14,10 @@ add_executable(travelling-salesman-problem src/main.cpp src/main.cpp
         src/algorithms/BruteForce.h
         src/array/Array.h
         src/result/AlgorithmResult.cpp
-        src/result/AlgorithmResult.h)
+        src/result/AlgorithmResult.h
+        src/algorithms/BranchAndBound.cpp
+        src/algorithms/BranchAndBound.h
+        src/algorithms/BnBNode.cpp
+        src/algorithms/BnBNode.h
+        src/algorithms/Matrix.cpp
+        src/algorithms/Matrix.h)

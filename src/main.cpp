@@ -6,15 +6,19 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    auto *tsp = new Graph(5);
+    auto *tsp = new Graph(4);
     tsp->add_new_connection(0, 1, 1);
-    tsp->add_new_connection(1, 4, 1);
+    tsp->add_new_connection(0, 2, 1);
+    tsp->add_new_connection(0, 3, 1);
+    tsp->add_new_connection(1, 0, 1);
+    tsp->add_new_connection(1, 2, 1);
     tsp->add_new_connection(1, 3, 1);
+    tsp->add_new_connection(2, 0, 1);
     tsp->add_new_connection(2, 1, 1);
-    tsp->add_new_connection(2, 4, 1);
+    tsp->add_new_connection(2, 3, 1);
+    tsp->add_new_connection(3, 0, 1);
+    tsp->add_new_connection(3, 1, 1);
     tsp->add_new_connection(3, 2, 1);
-    tsp->add_new_connection(4, 3, 1);
-    tsp->add_new_connection(4, 0, 1);
 
 //    tsp.print();
     BruteForce bruteForce;
