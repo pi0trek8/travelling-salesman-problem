@@ -6,15 +6,28 @@
 #define TRAVELLING_SALESMAN_PROBLEM_BNBNODE_H
 
 #include <vector>
+#include "Matrix.h"
 
 using  namespace std;
 
 class BnBNode {
+private:
+    int nodeId;
     int city;
-    int cityId;
     int lowerBound;
+    int parentNodeId;
     bool visited;
-    vector<int> adjacent_cities;
+    Matrix matrix;
+
+public:
+    explicit BnBNode(const Matrix &matrix) : matrix(matrix) {}
+
+    const Matrix &getMatrix() const {
+        return matrix;
+    }
+
+
+
 };
 
 

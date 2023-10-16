@@ -8,11 +8,11 @@
 
 #include "../list/List.h"
 #include "edge/Edge.h"
-
+#include "../array/Array.h"
 class Graph {
 private:
     int city_number = 0;
-    List<Edge> *graph = nullptr;
+    Array<int> *graph = nullptr;
 
 public:
 
@@ -22,9 +22,9 @@ public:
 
     void add_new_connection(int from, int to, int cost);
 
-    List<Edge> get_adjacent_cities(int city);
+    Array<int> get_adjacent_cities(int city);
 
-    bool find_adjacent_city(int city, int searched_city);
+    bool find_adjacent_city(int from_city, int to_city);
 
     void print();
 

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "../graph/Graph.h"
+#include "/BnBNode.h"
 
 using namespace std;
 
