@@ -1,7 +1,3 @@
-//
-// Created by Piotr Szczypior on 13/05/2023.
-//
-
 #ifndef GRAPH_ALGORITHMS_ITERATOR_H
 #define GRAPH_ALGORITHMS_ITERATOR_H
 

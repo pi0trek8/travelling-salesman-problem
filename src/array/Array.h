@@ -70,7 +70,7 @@ void Array<T>::set(T t, T new_t) {
 template<typename T>
 T& Array<T>::operator[](int index) {
     if (index < 0 || data == nullptr || index >= size) {
-        throw invalid_argument("index: " + to_string(index) + " is out of bounds for length: TTTTT " + to_string(size));
+        throw invalid_argument("index: " + to_string(index) + " is out of bounds for length: " + to_string(size));
     }
     return data[index];
 }
@@ -273,10 +273,7 @@ void Array<T>::swap(int source_index, int destination_index) {
 }
 
 template<typename T>
-Array<T>::~Array() {
-    //resolving mem block
-    delete[] data;
-}
+Array<T>::~Array() = default;
 
 template<typename T>
 void Array<T>::clear() {

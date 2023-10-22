@@ -1,7 +1,3 @@
-//
-// Created by Piotr Szczypior on 25/03/2023.
-//
-
 #ifndef LIST_DOUBLELISTNODE_H
 #define LIST_DOUBLELISTNODE_H
 

@@ -1,30 +1,26 @@
-//
-// Created by Zosia on 14.10.2023.
-//
-
 #ifndef TRAVELLING_SALESMAN_PROBLEM_BRANCHANDBOUND_H
 #define TRAVELLING_SALESMAN_PROBLEM_BRANCHANDBOUND_H
 
 #include <vector>
 #include "../graph/Graph.h"
-#include "/BnBNode.h"
+#include "Algorithm.h"
+#include "Matrix.h"
 
 using namespace std;
 
-class BranchAndBound {
+class BranchAndBound : public Algorithm {
 private:
-    Graph *graph;
-
-    
+    vector<vector<int>> mapToVector(Graph *graph);
 
 public:
-    explicit BranchAndBound(Graph *graph)  {
-        this->graph = graph;
-    }
+    AlgorithmResultTO *process(Graph *graph) override;
 
 
-    pair<vector<int>, int> process();
-
+    struct CompareMatrices {
+        bool operator()(const Matrix *first_matrix, const Matrix *second_matrix) {
+            return first_matrix->getCost() >= second_matrix->getCost();
+        }
+    };
 };
 
 

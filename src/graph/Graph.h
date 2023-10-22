@@ -1,7 +1,3 @@
-//
-// Created by Zosia on 11.10.2023.
-//
-
 #ifndef TRAVELLING_SALESMAN_PROBLEM_GRAPH_H
 #define TRAVELLING_SALESMAN_PROBLEM_GRAPH_H
 
@@ -9,6 +5,8 @@
 #include "../list/List.h"
 #include "edge/Edge.h"
 #include "../array/Array.h"
+
+
 class Graph {
 private:
     int city_number = 0;
@@ -22,7 +20,7 @@ public:
 
     void add_new_connection(int from, int to, int cost);
 
-    Array<int> get_adjacent_cities(int city);
+    Array<int> &get_adjacent_cities(int city);
 
     bool find_adjacent_city(int from_city, int to_city);
 

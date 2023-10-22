@@ -1,7 +1,3 @@
-//
-// Created by Zosia on 12.10.2023.
-//
-
 #ifndef TRAVELLING_SALESMAN_PROBLEM_BRUTEFORCE_H
 #define TRAVELLING_SALESMAN_PROBLEM_BRUTEFORCE_H
 
@@ -9,22 +5,25 @@
 #include "../list/List.h"
 #include "../graph/Graph.h"
 #include "../array/Array.h"
+#include "../TO/AlgorithmResultTO.h"
+#include "Algorithm.h"
+#include <vector>
 
-class BruteForce {
+class BruteForce : public Algorithm {
 private:
-    Array<Array<int>> possible_paths;
-    void create_permutations(Graph* graph, Array<int> permutation, int first_city, int last_city);
+    int minimal_cost;
+    vector<int> best_path;
+
+    void create_permutations(Graph *graph, vector<int> permutation, int first_city, int last_city);
+
+    static int calculate_total_path_cost(Graph *graph, vector<int> path);
 
 public:
-    void process(Graph* graph);
 
-    int calculate_best_option(Graph *graph);
+    BruteForce();
 
-    static int calculate_total_path_cost(Graph *graph, Array<int> array);
+    AlgorithmResultTO *process(Graph *graph) override;
 };
-
-
-
 
 
 #endif //TRAVELLING_SALESMAN_PROBLEM_BRUTEFORCE_H
