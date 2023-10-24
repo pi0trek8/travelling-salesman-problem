@@ -6,6 +6,8 @@
 #include "../timer/Timer.h"
 #include "../algorithms/BruteForce.h"
 #include "../algorithms/BranchAndBound.h"
+#include "../algorithms/LIFOBranchBound.h"
+#include "RandomGenerator.h"
 
 void MainMenu::create_menu() {
     int choice;
@@ -13,6 +15,7 @@ void MainMenu::create_menu() {
     Timer timer;
     Algorithm *algorithm;
 
+    auto randomGenerator = new RandomGenerator();
     Graph *graph = nullptr;
     FileReader fileReader;
 
@@ -38,14 +41,11 @@ void MainMenu::create_menu() {
                 cout << "Enter how many cities should problem contain: ";
                 cin >> buffer;
                 //TODO: muss noch ergaenzen werden
-//                graph = random_generator(stoi(buffer));
+                graph = randomGenerator->generate_random(stoi(buffer));
                 if (graph == nullptr) {
                     cout << "Problem was created unsuccessful. Please try again..." << endl;
                     ConsoleHelper::press_key_to_continue();
                 }
-                // TODO: nach Implementation muss entfernen werden - 2 Linien unter
-                cout << "NOT IMPLEMENTED YET" << endl;
-                ConsoleHelper::press_key_to_continue();
                 break;
             }
             case 3: {
@@ -100,7 +100,24 @@ void MainMenu::create_menu() {
                 break;
             }
             case 6: {
+                if (graph == nullptr) {
+                    cout << "Operation unsuccessful. Generate or read problem from file first." << endl;
+                    ConsoleHelper::press_key_to_continue();
+                    break;
+                }
 
+                delete algorithm;
+                cout << "Algorithm FIFO Branch & Bound" << endl;
+                algorithm = new LIFOBranchBound();
+
+                timer.time_start();
+                auto result = algorithm->process(graph);
+                timer.time_stop();
+
+                cout << "Algorithm results: " << endl;
+                generate_result_table(result->getPathCost(), result->getPath(), timer.elapsed_time());
+
+                ConsoleHelper::press_key_to_continue();
                 break;
             }
             case 7: {
@@ -123,14 +140,15 @@ void MainMenu::print_options() {
     cout << "2. Generate random problem" << std::endl;
     cout << "3. Display problem as adjacency matrix graph representation" << std::endl;
     cout << "4. Algorithm - Brute Force" << std::endl;
-    cout << "5. Algorithm - Branch & Bound" << std::endl;
-    cout << "6. Algorithm - Dynamic Programming" << std::endl;
-    cout << "7. Go back" << std::endl;
+    cout << "5. Algorithm - LC Branch & Bound" << std::endl;
+    cout << "6. Algorithm - FIFO Branch & Bound" << std::endl;
+    cout << "7. Algorithm - Dynamic Programming" << std::endl;
+    cout << "8. Go back" << std::endl;
     cout << "Choose: ";
 }
 
 
-void MainMenu::generate_result_table(int cost, vector<int> path, long long elapsed_time) {
+void MainMenu::generate_result_table(int cost, vector<int> path, pair<string, long long> elapsed_time) {
     int characters_size = 0;
     for (auto city_number: path) {
         if (city_number > 9) {
@@ -140,13 +158,18 @@ void MainMenu::generate_result_table(int cost, vector<int> path, long long elaps
         }
     }
     characters_size += path.size();
-
+    string time_label = "";
+    if (elapsed_time.first == "seconds") {
+        time_label = "time [s]";
+    } else {
+        time_label = "time [micro s]";
+    }
 
     std::cout << "| " << std::setw(8) << "cost" << " | "
               << std::setw(characters_size) << "path " << "| "
-              << std::setw(8) << "time [s]" << " |" << std::endl;
+              << std::setw(time_label.size()) << time_label << " |" << std::endl;
+    int separator_size = 16 + characters_size + time_label.size();
 
-    int separator_size = 25 + characters_size;
     for (int i = 0; i < separator_size; ++i) {
         std::cout << "-";
     }
@@ -162,6 +185,6 @@ void MainMenu::generate_result_table(int cost, vector<int> path, long long elaps
         }
     }
 
-    std::cout << "| " << std::setw(8) << elapsed_time << " |" << std::endl;
+    std::cout << "| " << std::setw(time_label.size()) << elapsed_time.second << " |" << std::endl;
 
 }

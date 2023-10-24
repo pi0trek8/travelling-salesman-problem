@@ -10,7 +10,7 @@ namespace MainMenu {
 
     void print_options();
 
-    void generate_result_table(int cost, vector<int> path, long long elapsed_time);
+    void generate_result_table(int cost, vector<int> path, pair<string, long long> elapsed_time);
 }
 
 #endif //TRAVELLING_SALESMAN_PROBLEM_MAINMENU_H

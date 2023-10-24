@@ -26,5 +26,5 @@ add_executable(travelling-salesman-problem src/main.cpp src/main.cpp
         src/timer/Timer.cpp
         src/timer/Timer.h
         src/to/AlgorithmResultTO.cpp
-        src/to/AlgorithmResultTO.h src/algorithms/Algorithm.h)
+        src/to/AlgorithmResultTO.h src/algorithms/Algorithm.h src/algorithms/LIFOBranchBound.cpp src/algorithms/LIFOBranchBound.h src/ui/RandomGenerator.cpp src/ui/RandomGenerator.h)
 

@@ -15,7 +15,7 @@ public:
 
     void time_start();
     void time_stop();
-    long long elapsed_time();
+    pair<string ,long long> elapsed_time();
 };
 
 

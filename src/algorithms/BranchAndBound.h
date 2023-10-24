@@ -12,15 +12,14 @@ class BranchAndBound : public Algorithm {
 private:
     vector<vector<int>> mapToVector(Graph *graph);
 
-public:
-    AlgorithmResultTO *process(Graph *graph) override;
-
-
     struct CompareMatrices {
         bool operator()(const Matrix *first_matrix, const Matrix *second_matrix) {
             return first_matrix->getCost() >= second_matrix->getCost();
         }
     };
+
+public:
+    AlgorithmResultTO *process(Graph *graph) override;
 };
 
 
