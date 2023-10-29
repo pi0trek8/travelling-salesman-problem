@@ -6,8 +6,10 @@
 #include "../timer/Timer.h"
 #include "../algorithms/BruteForce.h"
 #include "../algorithms/BranchAndBound.h"
-#include "../algorithms/LIFOBranchBound.h"
+#include "../algorithms/FIFOBranchBound.h"
 #include "RandomGenerator.h"
+#include "../algorithms/DynamicProgramming.h"
+#include "../algorithms/BruteForce2.h"
 
 void MainMenu::create_menu() {
     int choice;
@@ -66,7 +68,7 @@ void MainMenu::create_menu() {
                     break;
                 }
                 delete algorithm;
-                algorithm = new BruteForce();
+                algorithm = new BruteForce2(graph);
                 cout << "Algorithm Brute force" << endl;
                 timer.time_start();
                 auto result = algorithm->process(graph);
@@ -97,6 +99,7 @@ void MainMenu::create_menu() {
                 generate_result_table(result->getPathCost(), result->getPath(), timer.elapsed_time());
 
                 ConsoleHelper::press_key_to_continue();
+                delete result;
                 break;
             }
             case 6: {
@@ -108,7 +111,27 @@ void MainMenu::create_menu() {
 
                 delete algorithm;
                 cout << "Algorithm FIFO Branch & Bound" << endl;
-                algorithm = new LIFOBranchBound();
+                algorithm = new FIFOBranchBound();
+
+                timer.time_start();
+                auto result = algorithm->process(graph);
+                timer.time_stop();
+
+                cout << "Algorithm results: " << endl;
+                generate_result_table(result->getPathCost(), result->getPath(), timer.elapsed_time());
+                delete result;
+                ConsoleHelper::press_key_to_continue();
+                break;
+            }
+            case 7: {
+                if (graph == nullptr) {
+                    cout << "Operation unsuccessful. Generate or read problem from file first." << endl;
+                    ConsoleHelper::press_key_to_continue();
+                    break;
+                }
+                delete algorithm;
+                cout << "Dynamic Programming" << endl;
+                algorithm = new DynamicProgramming();
 
                 timer.time_start();
                 auto result = algorithm->process(graph);
@@ -118,11 +141,14 @@ void MainMenu::create_menu() {
                 generate_result_table(result->getPathCost(), result->getPath(), timer.elapsed_time());
 
                 ConsoleHelper::press_key_to_continue();
+                delete result;
                 break;
             }
-            case 7: {
-
-                break;
+            case 8: {
+                cout << "Quiting application..." << endl;
+                delete algorithm;
+                delete graph;
+                exit(0);
             }
             default: {
                 break;
@@ -143,7 +169,7 @@ void MainMenu::print_options() {
     cout << "5. Algorithm - LC Branch & Bound" << std::endl;
     cout << "6. Algorithm - FIFO Branch & Bound" << std::endl;
     cout << "7. Algorithm - Dynamic Programming" << std::endl;
-    cout << "8. Go back" << std::endl;
+    cout << "8. Exit" << std::endl;
     cout << "Choose: ";
 }
 

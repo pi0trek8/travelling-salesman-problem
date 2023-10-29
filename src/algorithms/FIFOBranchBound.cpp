@@ -1,8 +1,8 @@
 #include <queue>
-#include "LIFOBranchBound.h"
+#include "FIFOBranchBound.h"
 #include "Matrix.h"
 
-AlgorithmResultTO *LIFOBranchBound::process(Graph *graph) {
+AlgorithmResultTO *FIFOBranchBound::process(Graph *graph) {
     int city_number = graph->get_city_number();
     auto matrix = mapToVector(graph);
 
@@ -14,7 +14,6 @@ AlgorithmResultTO *LIFOBranchBound::process(Graph *graph) {
     Matrix *lower_node = nullptr;
 
     int upper_bound = INT_MAX;
-    bool is_completed = false;
 
     while (!queue.empty()) {
         parent_node = queue.front();
@@ -39,7 +38,6 @@ AlgorithmResultTO *LIFOBranchBound::process(Graph *graph) {
         }
     }
 
-    int cost = lower_node->getCost();
     vector<int> result_path(city_number + 1, 0);
     for (int i = city_number - 1; i > 0; --i) {
         if (lower_node != nullptr) {
@@ -48,10 +46,10 @@ AlgorithmResultTO *LIFOBranchBound::process(Graph *graph) {
         }
     }
 
-    return new AlgorithmResultTO(cost, result_path);
+    return new AlgorithmResultTO(upper_bound, result_path);
 }
 
-vector<vector<int>> LIFOBranchBound::mapToVector(Graph *graph) {
+vector<vector<int>> FIFOBranchBound::mapToVector(Graph *graph) {
     vector<vector<int>> matrix(graph->get_city_number(), vector<int>(graph->get_city_number()));
     for (int i = 0; i < graph->get_city_number(); ++i) {
         for (int j = 0; j < graph->get_city_number(); ++j) {

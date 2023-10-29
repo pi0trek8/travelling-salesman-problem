@@ -2,13 +2,13 @@
 // Created by Piotr Szczypior on 23/10/2023.
 //
 
-#ifndef TRAVELLING_SALESMAN_PROBLEM_LIFOBRANCHBOUND_H
-#define TRAVELLING_SALESMAN_PROBLEM_LIFOBRANCHBOUND_H
+#ifndef TRAVELLING_SALESMAN_PROBLEM_FIFOBRANCHBOUND_H
+#define TRAVELLING_SALESMAN_PROBLEM_FIFOBRANCHBOUND_H
 
 
 #include "Algorithm.h"
 
-class LIFOBranchBound : public Algorithm {
+class FIFOBranchBound : public Algorithm {
 private:
     vector<vector<int>> mapToVector(Graph *graph);
 
@@ -17,4 +17,4 @@ public:
 };
 
 
-#endif //TRAVELLING_SALESMAN_PROBLEM_LIFOBRANCHBOUND_H
+#endif //TRAVELLING_SALESMAN_PROBLEM_FIFOBRANCHBOUND_H

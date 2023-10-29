@@ -15,6 +15,7 @@ AlgorithmResultTO *BranchAndBound::process(Graph *graph) {
 
     Matrix *lower_node;
 
+    // calculate first upper bound using najblizszego sasiada
     int upper_bound = INT_MAX;
     bool is_completed = false;
 
@@ -25,25 +26,24 @@ AlgorithmResultTO *BranchAndBound::process(Graph *graph) {
         visited_cities[parent_node->get_city()] = true;
 
         if (upper_bound < parent_node->getCost()) {
+            delete parent_node;
             continue;
         }
 
-        if (!is_completed) {
-            is_completed = true;
-            for (int city = 0; city < city_number; ++city) {
-                if (visited_cities[city]) {
-                    continue;
-                }
-                is_completed = false;
-                auto new_node = new Matrix(parent_node, city, visited_cities, parent_node->get_matrix());
-                new_node->reduce_matrix(parent_node->get_city(), city, parent_node->getCost());
-                queue.push(new_node);
+        is_completed = true;
+        for (int city = 0; city < city_number; ++city) {
+            if (visited_cities[city]) {
+                continue;
             }
+            is_completed = false;
+            auto new_node = new Matrix(parent_node, city, visited_cities, parent_node->get_matrix());
+            new_node->reduce_matrix(parent_node->get_city(), city, parent_node->getCost());
+            queue.push(new_node);
+        }
 
-            if (is_completed && upper_bound > parent_node->getCost()) {
-                lower_node = parent_node;
-                upper_bound = parent_node->getCost();
-            }
+        if (is_completed && upper_bound > parent_node->getCost()) {
+            lower_node = parent_node;
+            upper_bound = parent_node->getCost();
         }
     }
 

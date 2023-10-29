@@ -17,6 +17,7 @@ AlgorithmResultTO *BruteForce::process(Graph *graph) {
     return new AlgorithmResultTO(minimal_cost, best_path);
 }
 
+//http://algorytmika.wikidot.com/exponential-permut?fbclid=IwAR00oDEd6EZWTG5_8eIX6-ZDDGp5sd1oOl2mCQKEu8JxW26WW9ggN9WNbX0
 void BruteForce::create_permutations(Graph *graph, vector<int> permutation, int first_city, int last_city) {
     if (first_city == last_city) {
         permutation.push_back(0);

@@ -47,6 +47,8 @@ public:
 
     T &operator[](int index);
 
+    Array<T> &operator=(Array<T> copy);
+
     virtual ~Array();
 
     iterator begin();
@@ -59,16 +61,27 @@ public:
 };
 
 template<typename T>
+Array<T> &Array<T>::operator=(Array<T> copy) {
+    delete[] data;
+    size = copy.get_size();
+    data = new T[size];
+    for (int i = 0; i < copy.get_size(); ++i) {
+        data[i] = copy[i];
+    }
+    return *this;
+}
+
+template<typename T>
 void Array<T>::set(T t, T new_t) {
-    for(int i = 0; i < size; i++) {
-        if(data[i] == t) {
+    for (int i = 0; i < size; i++) {
+        if (data[i] == t) {
             data[i] = new_t;
         }
     }
 }
 
 template<typename T>
-T& Array<T>::operator[](int index) {
+T &Array<T>::operator[](int index) {
     if (index < 0 || data == nullptr || index >= size) {
         throw invalid_argument("index: " + to_string(index) + " is out of bounds for length: " + to_string(size));
     }
