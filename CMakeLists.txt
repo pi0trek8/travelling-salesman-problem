@@ -31,5 +31,7 @@ add_executable(travelling-salesman-problem src/main.cpp src/main.cpp
         src/ui/RandomGenerator.cpp
         src/ui/RandomGenerator.h
         src/algorithms/DynamicProgramming.cpp
-        src/algorithms/DynamicProgramming.h src/algorithms/BruteForce2.cpp src/algorithms/BruteForce2.h)
+        src/algorithms/DynamicProgramming.h src/algorithms/BruteForce2.cpp src/algorithms/BruteForce2.h
+        src/ui/MenuUtils.cpp
+        src/ui/MenuUtils.h)
 

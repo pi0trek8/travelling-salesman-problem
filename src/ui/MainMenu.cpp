@@ -10,6 +10,7 @@
 #include "RandomGenerator.h"
 #include "../algorithms/DynamicProgramming.h"
 #include "../algorithms/BruteForce2.h"
+#include "MenuUtils.h"
 
 void MainMenu::create_menu() {
     int choice;
@@ -42,6 +43,7 @@ void MainMenu::create_menu() {
             case 2: {
                 cout << "Enter how many cities should problem contain: ";
                 cin >> buffer;
+                delete graph;
                 //TODO: muss noch ergaenzen werden
                 graph = randomGenerator->generate_random(stoi(buffer));
                 if (graph == nullptr) {
@@ -175,31 +177,19 @@ void MainMenu::print_options() {
 
 
 void MainMenu::generate_result_table(int cost, vector<int> path, pair<string, long long> elapsed_time) {
-    int characters_size = 0;
-    for (auto city_number: path) {
-        if (city_number > 9) {
-            characters_size += 2;
-        } else {
-            characters_size += 1;
-        }
-    }
-    characters_size += path.size();
-    string time_label = "";
-    if (elapsed_time.first == "seconds") {
-        time_label = "time [s]";
-    } else {
-        time_label = "time [micro s]";
-    }
+    int characters_size = MenuUtils::calculate_path_characters_size(path);
+    string time_label = MenuUtils::get_time_label(elapsed_time.first);
+    int words_length = 15;
 
-    std::cout << "| " << std::setw(8) << "cost" << " | "
-              << std::setw(characters_size) << "path " << "| "
-              << std::setw(time_label.size()) << time_label << " |" << std::endl;
-    int separator_size = 16 + characters_size + time_label.size();
+    std::cout << "| "
+            << std::setw(8) << "cost" << " | "
+            << std::setw(characters_size) << "path " << "| "
+            << std::setw(time_label.size()) << time_label << " |";
+    cout << endl;
 
-    for (int i = 0; i < separator_size; ++i) {
-        std::cout << "-";
-    }
-    std::cout << std::endl;
+    int separator_size = words_length + characters_size + time_label.size();
+    MenuUtils::print_separator(separator_size);
+
 
     std::cout << "| " << std::setw(8) << cost << " | ";
 

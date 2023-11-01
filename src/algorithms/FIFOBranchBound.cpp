@@ -1,4 +1,5 @@
 #include <queue>
+#include <stack>
 #include "FIFOBranchBound.h"
 #include "Matrix.h"
 
@@ -6,19 +7,19 @@ AlgorithmResultTO *FIFOBranchBound::process(Graph *graph) {
     int city_number = graph->get_city_number();
     auto matrix = mapToVector(graph);
 
-    List<Matrix *> queue;
+    std::stack<Matrix *> queue;
     auto parent_node = new Matrix(nullptr, 0, vector<bool>(city_number, false), matrix);
     parent_node->perform_first_reduction();
-    queue.push_back(parent_node);
+    queue.push(parent_node);
 
     Matrix *lower_node = nullptr;
 
     int upper_bound = INT_MAX;
     bool is_completed;
 
-    while (!queue.get_size()) {
-        parent_node = queue[0];
-        queue.pop_front();
+    while (!queue.empty()) {
+        parent_node = queue.top();
+        queue.pop();
         auto visited_cities = parent_node->get_visited_cities();
         visited_cities[parent_node->get_city()] = true;
 
@@ -35,7 +36,7 @@ AlgorithmResultTO *FIFOBranchBound::process(Graph *graph) {
             is_completed = false;
             auto new_node = new Matrix(parent_node, city, visited_cities, parent_node->get_matrix());
             new_node->reduce_matrix(parent_node->get_city(), city, parent_node->getCost());
-            queue.push_front(new_node);
+            queue.push(new_node);
         }
 
         if (is_completed && upper_bound > parent_node->getCost()) {
