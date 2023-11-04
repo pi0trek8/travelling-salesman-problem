@@ -3,19 +3,11 @@
 
 Graph::Graph() {
     this->city_number = 0;
-    this->graph = new Array<int>[0];
 }
 
 Graph::Graph(int city_number) {
     this->city_number = city_number;
-    this->graph = new Array<int>[city_number];
-
-    // TODO: not so elegant
-    for (int i = 0; i < city_number; ++i) {
-        for (int j = 0; j < city_number; ++j) {
-            graph[i].push_back(0);
-        }
-    }
+    graph.resize(city_number, vector<int>(city_number));
 }
 
 void Graph::add_new_connection(int source_city, int destination_city, int cost) {
@@ -26,7 +18,7 @@ void Graph::add_new_connection(int source_city, int destination_city, int cost) 
     this->graph[source_city][destination_city] = cost;
 }
 
-Array<int> &Graph::get_adjacent_cities(int city) {
+vector<int> &Graph::get_adjacent_cities(int city) {
     return graph[city];
 }
 
@@ -56,5 +48,3 @@ int Graph::get_edge_cost_if_exists(int from_city, int to_city) {
     }
     return adjacent_cities[to_city];
 }
-
-

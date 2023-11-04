@@ -2,6 +2,7 @@
 #define TRAVELLING_SALESMAN_PROBLEM_GRAPH_H
 
 
+#include <vector>
 #include "../list/List.h"
 #include "../array/Array.h"
 
@@ -9,25 +10,29 @@
 class Graph {
 private:
     int city_number = 0;
-    Array<int> *graph = nullptr;
+    vector<vector<int>> graph;
 
 public:
-
     Graph();
 
     explicit Graph(int city_number);
 
     void add_new_connection(int from, int to, int cost);
 
-    Array<int> &get_adjacent_cities(int city);
+    vector<int> &get_adjacent_cities(int city);
 
     bool find_adjacent_city(int from_city, int to_city);
 
     void print();
 
+
     int get_edge_cost_if_exists(int from_city, int to_city);
 
     int get_city_number() const;
+
+    const vector<vector<int>> &get_graph_as_vector() const {
+        return graph;
+    }
 };
 
 

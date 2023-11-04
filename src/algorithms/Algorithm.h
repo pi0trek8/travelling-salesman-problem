@@ -7,7 +7,9 @@
 
 class Algorithm {
 public:
-    virtual AlgorithmResultTO* process(Graph *graph) = 0;
+    virtual AlgorithmResultTO* process() = 0;
+
+    virtual ~Algorithm() = default;
 };
 
 

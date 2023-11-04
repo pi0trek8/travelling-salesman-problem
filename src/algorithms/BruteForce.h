@@ -11,18 +11,22 @@
 
 class BruteForce : public Algorithm {
 private:
+    Graph *graph;
+    int city_number;
     int minimal_cost;
-    vector<int> best_path;
+    Array<int> permutation;
+    Array<int> best_path;
 
-    void create_permutations(Graph *graph, vector<int> permutation, int first_city, int last_city);
+    void create_permutations(int last_city);
 
-    static int calculate_total_path_cost(Graph *graph, vector<int> path);
+    int calculate_total_path_cost();
 
 public:
+    explicit BruteForce(Graph *graph);
 
-    BruteForce();
+    ~BruteForce() override;
 
-    AlgorithmResultTO *process(Graph *graph) override;
+    AlgorithmResultTO *process() override;
 };
 
 

@@ -6,12 +6,21 @@
 
 class DynamicProgramming : public Algorithm {
 private:
-    vector<vector<int>> cache;
+    int ALL_CITIES_VISITED_MARKER;
+    Graph *graph;
+    int city_number;
+    int **cache;
+    int **last_cities;
+
+    void allocate_memory();
 
     int execute(int city, int mask);
-
 public:
-    AlgorithmResultTO *process(Graph *graph) override;
+    explicit DynamicProgramming(Graph *graph);
+
+    AlgorithmResultTO *process() override;
+
+    ~DynamicProgramming() override;
 };
 
 

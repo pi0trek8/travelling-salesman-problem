@@ -5,8 +5,8 @@
 #include "../file/FileReader.h"
 #include "../timer/Timer.h"
 #include "../algorithms/BruteForce.h"
-#include "../algorithms/BranchAndBound.h"
-#include "../algorithms/FIFOBranchBound.h"
+#include "../algorithms/LCBranchAndBound.h"
+#include "../algorithms/DFSBranchBound.h"
 #include "RandomGenerator.h"
 #include "../algorithms/DynamicProgramming.h"
 #include "../algorithms/BruteForce2.h"
@@ -31,7 +31,7 @@ void MainMenu::create_menu() {
             case 1: {
                 cout << "Enter file path: ";
                 cin >> buffer;
-
+                delete graph;
                 graph = fileReader.read_problem_from_file<Graph>(buffer);
 
                 if (graph == nullptr) {
@@ -44,7 +44,6 @@ void MainMenu::create_menu() {
                 cout << "Enter how many cities should problem contain: ";
                 cin >> buffer;
                 delete graph;
-                //TODO: muss noch ergaenzen werden
                 graph = randomGenerator->generate_random(stoi(buffer));
                 if (graph == nullptr) {
                     cout << "Problem was created unsuccessful. Please try again..." << endl;
@@ -73,7 +72,7 @@ void MainMenu::create_menu() {
                 algorithm = new BruteForce2(graph);
                 cout << "Algorithm Brute force" << endl;
                 timer.time_start();
-                auto result = algorithm->process(graph);
+                auto result = algorithm->process();
                 timer.time_stop();
 
                 cout << "Algorithm results: " << endl;
@@ -91,10 +90,10 @@ void MainMenu::create_menu() {
                 }
                 delete algorithm;
                 cout << "Algorithm LC Branch & Bound" << endl;
-                algorithm = new BranchAndBound();
+                algorithm = new LCBranchAndBound(graph);
 
                 timer.time_start();
-                auto result = algorithm->process(graph);
+                auto result = algorithm->process();
                 timer.time_stop();
 
                 cout << "Algorithm results: " << endl;
@@ -110,13 +109,12 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-
                 delete algorithm;
                 cout << "Algorithm FIFO Branch & Bound" << endl;
-                algorithm = new FIFOBranchBound();
+                algorithm = new DFSBranchBound(graph);
 
                 timer.time_start();
-                auto result = algorithm->process(graph);
+                auto result = algorithm->process();
                 timer.time_stop();
 
                 cout << "Algorithm results: " << endl;
@@ -131,12 +129,12 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-                delete algorithm;
+//                delete algorithm;
                 cout << "Dynamic Programming" << endl;
-                algorithm = new DynamicProgramming();
+                algorithm = new DynamicProgramming(graph);
 
                 timer.time_start();
-                auto result = algorithm->process(graph);
+                auto result = algorithm->process();
                 timer.time_stop();
 
                 cout << "Algorithm results: " << endl;
@@ -157,9 +155,7 @@ void MainMenu::create_menu() {
             }
         }
     }
-
 }
-
 
 void MainMenu::print_options() {
     cout << endl;
@@ -202,5 +198,4 @@ void MainMenu::generate_result_table(int cost, vector<int> path, pair<string, lo
     }
 
     std::cout << "| " << std::setw(time_label.size()) << elapsed_time.second << " |" << std::endl;
-
 }

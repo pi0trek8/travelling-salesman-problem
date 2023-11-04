@@ -1,21 +1,25 @@
 #include <queue>
-#include <stack>
-#include "FIFOBranchBound.h"
+#include <iomanip>
+#include "LCBranchAndBound.h"
 #include "Matrix.h"
 
-AlgorithmResultTO *FIFOBranchBound::process(Graph *graph) {
-    int city_number = graph->get_city_number();
-    auto matrix = mapToVector(graph);
+LCBranchAndBound::LCBranchAndBound(Graph *graph) : graph(graph) {}
 
-    std::stack<Matrix *> queue;
+AlgorithmResultTO *LCBranchAndBound::process() {
+    int city_number = graph->get_city_number();
+
+    const auto& matrix = graph->get_graph_as_vector();
+
+    std::priority_queue<Matrix *, vector<Matrix *>, CompareMatrices> queue;
     auto parent_node = new Matrix(nullptr, 0, vector<bool>(city_number, false), matrix);
     parent_node->perform_first_reduction();
     queue.push(parent_node);
 
-    Matrix *lower_node = nullptr;
+    Matrix *lower_node;
 
+    // calculate first upper bound using najblizszego sasiada
     int upper_bound = INT_MAX;
-    bool is_completed;
+    bool is_completed = false;
 
     while (!queue.empty()) {
         parent_node = queue.top();
@@ -56,12 +60,4 @@ AlgorithmResultTO *FIFOBranchBound::process(Graph *graph) {
     return new AlgorithmResultTO(upper_bound, result_path);
 }
 
-vector<vector<int>> FIFOBranchBound::mapToVector(Graph *graph) {
-    vector<vector<int>> matrix(graph->get_city_number(), vector<int>(graph->get_city_number()));
-    for (int i = 0; i < graph->get_city_number(); ++i) {
-        for (int j = 0; j < graph->get_city_number(); ++j) {
-            matrix[i][j] = graph->get_adjacent_cities(i)[j];
-        }
-    }
-    return matrix;
-}
+LCBranchAndBound::~LCBranchAndBound() = default;

@@ -1,27 +1,28 @@
 #include <queue>
-#include <iomanip>
-#include "BranchAndBound.h"
+#include <stack>
+#include "DFSBranchBound.h"
 #include "Matrix.h"
 
-AlgorithmResultTO *BranchAndBound::process(Graph *graph) {
+DFSBranchBound::DFSBranchBound(Graph *graph) : graph(graph) {}
+
+AlgorithmResultTO *DFSBranchBound::process() {
     int city_number = graph->get_city_number();
+    auto matrix = graph->get_graph_as_vector();
 
-    auto matrix = mapToVector(graph);
-
-    std::priority_queue<Matrix *, vector<Matrix *>, CompareMatrices> queue;
+    std::stack<Matrix *> stack;
     auto parent_node = new Matrix(nullptr, 0, vector<bool>(city_number, false), matrix);
     parent_node->perform_first_reduction();
-    queue.push(parent_node);
 
-    Matrix *lower_node;
+    stack.push(parent_node);
 
-    // calculate first upper bound using najblizszego sasiada
+    Matrix *lower_node = nullptr;
+
     int upper_bound = INT_MAX;
-    bool is_completed = false;
+    bool is_completed;
 
-    while (!queue.empty()) {
-        parent_node = queue.top();
-        queue.pop();
+    while (!stack.empty()) {
+        parent_node = stack.top();
+        stack.pop();
         auto visited_cities = parent_node->get_visited_cities();
         visited_cities[parent_node->get_city()] = true;
 
@@ -38,7 +39,7 @@ AlgorithmResultTO *BranchAndBound::process(Graph *graph) {
             is_completed = false;
             auto new_node = new Matrix(parent_node, city, visited_cities, parent_node->get_matrix());
             new_node->reduce_matrix(parent_node->get_city(), city, parent_node->getCost());
-            queue.push(new_node);
+            stack.push(new_node);
         }
 
         if (is_completed && upper_bound > parent_node->getCost()) {
@@ -58,12 +59,4 @@ AlgorithmResultTO *BranchAndBound::process(Graph *graph) {
     return new AlgorithmResultTO(upper_bound, result_path);
 }
 
-vector<vector<int>> BranchAndBound::mapToVector(Graph *graph) {
-    vector<vector<int>> matrix(graph->get_city_number(), vector<int>(graph->get_city_number()));
-    for (int i = 0; i < graph->get_city_number(); ++i) {
-        for (int j = 0; j < graph->get_city_number(); ++j) {
-            matrix[i][j] = graph->get_adjacent_cities(i)[j];
-        }
-    }
-    return matrix;
-}
+DFSBranchBound::~DFSBranchBound() = default;

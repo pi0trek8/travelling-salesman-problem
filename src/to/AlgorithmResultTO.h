@@ -1,6 +1,8 @@
 #ifndef TRAVELLING_SALESMAN_PROBLEM_ALGORITHMRESULTTO_H
 #define TRAVELLING_SALESMAN_PROBLEM_ALGORITHMRESULTTO_H
+
 #include <vector>
+#include "../array/Array.h"
 
 using namespace std;
 
@@ -14,12 +16,7 @@ public:
 
     int getPathCost() const;
 
-    void setPathCost(int pathCost);
-
     const vector<int> &getPath() const;
-
-    void setPath(const vector<int> &path);
-
 };
 
 

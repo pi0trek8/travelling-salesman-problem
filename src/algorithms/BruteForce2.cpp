@@ -5,10 +5,11 @@
 #include "BruteForce2.h"
 
 BruteForce2::BruteForce2(Graph *graph) : graph(graph) {
+    minimal_cost = INT_MAX;
     this->city_number = graph->get_city_number();
 }
 
-AlgorithmResultTO *BruteForce2::process(Graph *g) {
+AlgorithmResultTO *BruteForce2::process() {
     for (int i = 0; i < city_number; ++i) {
         permutation.push_back(i);
     }
@@ -49,3 +50,4 @@ int BruteForce2::calculate_total_path_cost() {
     return cost;
 }
 
+BruteForce2::~BruteForce2() = default;

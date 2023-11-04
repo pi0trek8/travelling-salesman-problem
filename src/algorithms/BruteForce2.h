@@ -23,7 +23,9 @@ private:
 public:
     explicit BruteForce2(Graph *graph);
 
-    AlgorithmResultTO *process(Graph *graph) override;
+    ~BruteForce2() override;
+
+    AlgorithmResultTO *process() override;
 };
 
 
