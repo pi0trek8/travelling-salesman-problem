@@ -164,8 +164,8 @@ void MainMenu::print_options() {
     cout << "2. Generate random problem" << std::endl;
     cout << "3. Display problem as adjacency matrix graph representation" << std::endl;
     cout << "4. Algorithm - Brute Force" << std::endl;
-    cout << "5. Algorithm - LC Branch & Bound" << std::endl;
-    cout << "6. Algorithm - FIFO Branch & Bound" << std::endl;
+    cout << "5. Algorithm - Best First Search (Low Cost) Branch & Bound" << std::endl;
+    cout << "6. Algorithm - Depth First Search Branch & Bound" << std::endl;
     cout << "7. Algorithm - Dynamic Programming" << std::endl;
     cout << "8. Exit" << std::endl;
     cout << "Choose: ";
