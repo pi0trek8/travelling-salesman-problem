@@ -15,3 +15,9 @@ pair<string ,long long> Timer::elapsed_time() {
     }
     return pair("microseconds", duration_cast<microseconds>(endTime - initialTime).count());
 }
+
+float Timer::elapsed_time_in_seconds() {
+    typedef  std::chrono::duration<float> FloatSeconds;
+    FloatSeconds f_seconds = endTime - initialTime;
+    return f_seconds.count();
+}

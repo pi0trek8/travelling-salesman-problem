@@ -10,7 +10,7 @@ private:
     Graph *graph;
     int city_number;
     int **cache;
-    int **last_cities;
+    int **least_cost_paths;
 
     void allocate_memory();
 

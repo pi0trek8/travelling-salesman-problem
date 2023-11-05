@@ -7,18 +7,18 @@ DynamicProgramming::DynamicProgramming(Graph *graph) : graph(graph) {
 }
 
 AlgorithmResultTO *DynamicProgramming::process() {
-    vector<int> hamiltonian_cycle;
+    vector<int> least_cost_hamiltonian_cycle;
     execute(0, (1 << 0));
 
     int city = 0;
-    hamiltonian_cycle.push_back(city);
+    least_cost_hamiltonian_cycle.push_back(city);
     for (int m = 1 << 0; m < (1 << city_number) - 1; m = m | (1 << city)) {
-        city = last_cities[city][m];
-        hamiltonian_cycle.push_back(city);
+        city = least_cost_paths[city][m];
+        least_cost_hamiltonian_cycle.push_back(city);
     }
-    hamiltonian_cycle.push_back(0);
+    least_cost_hamiltonian_cycle.push_back(0);
 
-    return new AlgorithmResultTO(cache[0][1 << 0], hamiltonian_cycle);
+    return new AlgorithmResultTO(cache[0][1 << 0], least_cost_hamiltonian_cycle);
 }
 
 int DynamicProgramming::execute(int city, int mask) {
@@ -45,23 +45,23 @@ int DynamicProgramming::execute(int city, int mask) {
         }
     }
     this->cache[city][mask] = minimum_path_cost;
-    this->last_cities[city][mask] = last_visited_city;
+    this->least_cost_paths[city][mask] = last_visited_city;
 
     return minimum_path_cost;
 }
 
 void DynamicProgramming::allocate_memory() {
     cache = new int *[city_number];
-    last_cities = new int *[city_number];
+    least_cost_paths = new int *[city_number];
     for (int i = 0; i < city_number; ++i) {
         cache[i] = new int[1 << city_number];
-        last_cities[i] = new int[1 << city_number];
+        least_cost_paths[i] = new int[1 << city_number];
     }
 
     for (int i = 0; i < this->city_number; i++) {
         for (int j = 0; j < 1 << this->city_number; j++) {
             this->cache[i][j] = -1;
-            this->last_cities[i][j] = -1;
+            this->least_cost_paths[i][j] = -1;
         }
     }
 }
@@ -69,8 +69,8 @@ void DynamicProgramming::allocate_memory() {
 DynamicProgramming::~DynamicProgramming() {
     for (int i = 0; i < city_number; ++i) {
         delete[] cache[i];
-        delete[] last_cities[i];
+        delete[] least_cost_paths[i];
     }
     delete[] cache;
-    delete[] last_cities;
+    delete[] least_cost_paths;
 }
