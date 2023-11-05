@@ -6,7 +6,7 @@
 
 class DynamicProgramming : public Algorithm {
 private:
-    int ALL_CITIES_VISITED_MARKER;
+    int ALL_VISITED_CITIES_MASK;
     Graph *graph;
     int city_number;
     int **cache;
