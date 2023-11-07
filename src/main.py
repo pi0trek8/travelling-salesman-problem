@@ -23,7 +23,7 @@ def add_column_to_csv(csv_file, new_column_name, new_column_data):
         # Add the new column header to the first row
         print(rows)
 
-    for i in range(1, len(rows)):
+    for i in range(0, len(rows)):
         # Add the new column data to the remaining rows
         rows[i].append(new_column_data[i - 1])
 
@@ -38,6 +38,7 @@ def collect_data_single_algorithm():
         create_file(file_name)
         output = []
         for city in cities:
+            
             command = [executable_path, alg, city]
             result = subprocess.run(command, capture_output=True, text=True)
             output.append(result.stdout)
@@ -51,17 +52,12 @@ executable_path = (R"C:\Users\Zosia\Desktop\travelling-salesman-problem\cmake-bu
 
 
 cities = [
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13"
+    "32",
+    "33",
+    "34",
+    "35",
 ]
 
-algorithms = ['Brute Force']
-
+algorithms = ['LC Branch and Bound', 'DFS Branch and Bound']
 if __name__ == '__main__':
     collect_data_single_algorithm()

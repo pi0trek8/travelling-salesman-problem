@@ -1,3 +1,4 @@
+#include <thread>
 #include "ui/MainMenu.h"
 #include "graph/Graph.h"
 #include "algorithms/Algorithm.h"
@@ -12,10 +13,18 @@ using namespace std;
 
 void automated_tests(const vector<string> &arguments);
 
+void time_limit_thread();
+
+void print_thread() {
+    while (true) {
+        std::cout << "1" << std::endl;
+    }
+}
+
 int main(int argc, char *argv[]) {
-//    MainMenu::create_menu();
-//    if (argc == 0) {
-//    }
+
+//    thread countdown(time_limit_thread);
+//    thread count(print_thread);
 
     vector<string> arguments;
     for (int i = 0; i < argc; ++i) {
@@ -32,7 +41,7 @@ void automated_tests(const vector<string> &arguments) {
 
     float whole_time = 0.0;
 
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 10; ++i) {
         auto graph = randomGenerator->generate_random(stoi(arguments[2]));
 
         if (arguments[1] == "Brute Force") {

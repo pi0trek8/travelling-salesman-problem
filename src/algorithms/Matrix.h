@@ -14,6 +14,8 @@ private:
 
     int cost;
 
+    vector<Matrix *> children;
+
     vector<bool> visited_cities;
 
     vector<vector<int>> matrix;
@@ -42,6 +44,12 @@ public:
     const vector<bool> &get_visited_cities() const;
 
     Matrix *get_parent();
+
+    void add_children(Matrix* child) {
+        this->children.push_back(child);
+    }
+
+    const vector<Matrix *> &getChildren() const;
 };
 
 #endif //TRAVELLING_SALESMAN_PROBLEM_MATRIX_H

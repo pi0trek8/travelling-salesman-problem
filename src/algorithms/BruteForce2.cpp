@@ -1,7 +1,3 @@
-//
-// Created by Piotr Szczypior on 29/10/2023.
-//
-
 #include "BruteForce2.h"
 
 BruteForce2::BruteForce2(Graph *graph) : graph(graph) {

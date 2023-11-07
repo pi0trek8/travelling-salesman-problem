@@ -48,11 +48,14 @@ AlgorithmResultTO *DFSBranchBound::process() {
         }
     }
 
+    Matrix* node_to_remove = nullptr;
     vector<int> result_path(city_number + 1, 0);
     for (int i = city_number - 1; i > 0; --i) {
         if (lower_node != nullptr) {
             result_path[i] = lower_node->get_city();
+            node_to_remove = lower_node;
             lower_node = lower_node->get_parent();
+            delete node_to_remove;
         }
     }
 

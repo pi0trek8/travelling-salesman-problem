@@ -20,7 +20,7 @@ def plot(file: str, directory=''):
     plt.xlabel('Number of elements [n]')
     plt.ylabel('Time (seconds)')
     fig = plt.gcf()
-    plt.show()
+    # plt.show()
     if not os.path.exists('img'):
         os.mkdir('img')
 
@@ -45,7 +45,7 @@ def plot_multiline(file: str):
     plt.ylabel('Time (seconds)')
     # Show the plot
     fig = plt.gcf()
-    plt.show()
+    # plt.show()
     if not os.path.exists('img'):
         os.mkdir('img')
 
@@ -59,4 +59,7 @@ def get_csv_files(directory=''):
     return [f for f in os.listdir() if f.endswith('.csv')]
 
 # file = "C:\\Users\\Admin\\Desktop\\dikstra\\mst_list.csv"
-plot("Brute_Force.csv")
+# plot("Brute_Force.csv")
+
+# for i in range(15, 33):
+#     print(f'"{i}",')

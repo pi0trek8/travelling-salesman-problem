@@ -113,3 +113,7 @@ Matrix::Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, cons
           visited_cities(visitedCities),
           matrix(matrix) {}
 
+const vector<Matrix *> &Matrix::getChildren() const {
+    return children;
+}
+
