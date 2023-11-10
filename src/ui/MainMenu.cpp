@@ -68,7 +68,6 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-                delete algorithm;
                 algorithm = new BruteForce2(graph);
                 cout << "Algorithm Brute force" << endl;
                 timer.time_start();
@@ -88,7 +87,6 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-                delete algorithm;
                 cout << "Algorithm LC Branch & Bound" << endl;
                 algorithm = new LCBranchAndBound(graph);
 
@@ -109,7 +107,6 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-                delete algorithm;
                 cout << "Algorithm FIFO Branch & Bound" << endl;
                 algorithm = new DFSBranchBound(graph);
 
@@ -129,7 +126,6 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-//                delete algorithm;
                 cout << "Dynamic Programming" << endl;
                 algorithm = new DynamicProgramming(graph);
 
@@ -172,7 +168,7 @@ void MainMenu::print_options() {
 }
 
 
-void MainMenu::generate_result_table(int cost, vector<int> path, pair<string, long long> elapsed_time) {
+void MainMenu::generate_result_table(int cost, const vector<int>& path, pair<string, long long> elapsed_time) {
     int characters_size = MenuUtils::calculate_path_characters_size(path);
     string time_label = MenuUtils::get_time_label(elapsed_time.first);
     int words_length = 15;

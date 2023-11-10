@@ -15,22 +15,18 @@ void automated_tests(const vector<string> &arguments);
 
 void time_limit_thread();
 
-void print_thread() {
-    while (true) {
-        std::cout << "1" << std::endl;
-    }
-}
-
 int main(int argc, char *argv[]) {
+
+    MainMenu::create_menu();
 
 //    thread countdown(time_limit_thread);
 //    thread count(print_thread);
 
-    vector<string> arguments;
-    for (int i = 0; i < argc; ++i) {
-        arguments.emplace_back(argv[i]);
-    }
-    automated_tests(arguments);
+//    vector<string> arguments;
+//    for (int i = 0; i < argc; ++i) {
+//        arguments.emplace_back(argv[i]);
+//    }
+//    automated_tests(arguments);
     return 0;
 }
 

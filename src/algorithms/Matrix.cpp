@@ -1,5 +1,6 @@
 #include <climits>
 #include <iomanip>
+#include <utility>
 #include "Matrix.h"
 
 void Matrix::perform_first_reduction() {
@@ -107,13 +108,10 @@ Matrix *Matrix::get_parent() {
     return parent;
 }
 
-Matrix::Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix)
+Matrix::Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix,
+               vector<int> parents)
         : parent(parent),
           city(city),
           visited_cities(visitedCities),
-          matrix(matrix) {}
-
-const vector<Matrix *> &Matrix::getChildren() const {
-    return children;
-}
-
+          matrix(matrix),
+          parents(std::move(parents)) {}

@@ -14,8 +14,6 @@ private:
 
     int cost;
 
-    vector<Matrix *> children;
-
     vector<bool> visited_cities;
 
     vector<vector<int>> matrix;
@@ -27,11 +25,13 @@ private:
     int reduce_rows_if_possible(int matrix_size);
 
 public:
+    vector<int> parents;
+
     int getCost() const;
 
     const vector<vector<int>> &get_matrix() const;
 
-    Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix);
+    Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix, vector<int> parents);
 
     void print() const;
 
@@ -44,12 +44,6 @@ public:
     const vector<bool> &get_visited_cities() const;
 
     Matrix *get_parent();
-
-    void add_children(Matrix* child) {
-        this->children.push_back(child);
-    }
-
-    const vector<Matrix *> &getChildren() const;
 };
 
 #endif //TRAVELLING_SALESMAN_PROBLEM_MATRIX_H

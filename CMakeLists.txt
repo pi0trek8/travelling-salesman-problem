@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 
+#set(CMAKE_CXX_FLAGS_RELEASE "-03")
+
 add_executable(travelling-salesman-problem src/main.cpp
         src/graph/Graph.cpp
         src/graph/Graph.h

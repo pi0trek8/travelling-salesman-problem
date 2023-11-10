@@ -10,6 +10,7 @@ AlgorithmResultTO *BruteForce2::process() {
         permutation.push_back(i);
     }
     minimal_cost = calculate_total_path_cost();
+    best_path = permutation;
     create_permutations(city_number - 1);
 
     vector<int> path_to_return(city_number + 1, 0);
