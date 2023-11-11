@@ -103,15 +103,23 @@ const vector<bool> &Matrix::get_visited_cities() const {
     return visited_cities;
 }
 
-
-Matrix *Matrix::get_parent() {
-    return parent;
+Matrix::Matrix(int city, const vector<vector<int>> &matrix,
+               vector<int> parents)
+        : city(city),
+          matrix(matrix),
+          parents(std::move(parents)) {
+    for (auto parent : parents) {
+        visited_cities_mask = visited_cities_mask | (1 << parent);
+    }
 }
 
-Matrix::Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix,
-               vector<int> parents)
-        : parent(parent),
-          city(city),
-          visited_cities(visitedCities),
-          matrix(matrix),
-          parents(std::move(parents)) {}
+bool Matrix::is_single_candidate() {
+    for (int i = 0; i < matrix.size(); ++i) {
+        if (matrix[city][i] != -1 && city != i) {
+            return false;
+        }
+    }
+    return true;
+}
+
+Matrix::Matrix() {}

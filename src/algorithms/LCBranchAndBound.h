@@ -13,8 +13,8 @@ private:
     Graph *graph;
 
     struct CompareMatrices {
-        bool operator()(const Matrix *first_matrix, const Matrix *second_matrix) {
-            return first_matrix->getCost() >= second_matrix->getCost();
+        bool operator()(const Matrix first_matrix, const Matrix second_matrix) {
+            return first_matrix.getCost() >= second_matrix.getCost();
         }
     };
 

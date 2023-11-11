@@ -9,13 +9,13 @@ AlgorithmResultTO *DFSBranchBound::process() {
     int city_number = graph->get_city_number();
     auto matrix = graph->get_graph_as_vector();
 
-    std::stack<Matrix *> stack;
-    auto parent_node = new Matrix(nullptr, 0, vector<bool>(city_number, false), matrix, vector<int>());
-    parent_node->perform_first_reduction();
+    std::stack<Matrix> stack;
+    auto parent_node = Matrix(0,  matrix, vector<int>());
+    parent_node.perform_first_reduction();
 
     stack.push(parent_node);
 
-    Matrix *lower_node = nullptr;
+    Matrix lower_node;
     int min = 0;
 
     int upper_bound = INT_MAX;
@@ -24,35 +24,37 @@ AlgorithmResultTO *DFSBranchBound::process() {
     while (!stack.empty()) {
         parent_node = stack.top();
         stack.pop();
-        auto visited_cities = parent_node->get_visited_cities();
-        visited_cities[parent_node->get_city()] = true;
 
-        if (upper_bound < parent_node->getCost()) {
-            delete parent_node;
+        if (parent_node.is_single_candidate()) {
+            if (upper_bound > parent_node.getCost() / 2) {
+                cout << parent_node.get_city() << " with cost: "<<parent_node.getCost() << endl;
+                lower_node = parent_node;
+                upper_bound = parent_node.getCost() / 2;
+            }
             continue;
         }
 
-        is_completed = true;
         for (int city = 0; city < city_number; ++city) {
-            if (visited_cities[city]) {
+            if (city == parent_node.get_city() || parent_node.has_city_been_visited(city)) {
                 continue;
             }
-            is_completed = false;
-            auto new_node = new Matrix(parent_node, city, visited_cities, parent_node->get_matrix(), parent_node->parents);
-            new_node->reduce_matrix(parent_node->get_city(), city, parent_node->getCost());
-            new_node->parents.push_back(parent_node->get_city());
-            stack.push(new_node);
-        }
 
-        if (is_completed && upper_bound > parent_node->getCost()) {
-            lower_node = parent_node;
-            upper_bound = parent_node->getCost();
-            min++;
+            auto new_node = Matrix(city, parent_node.get_matrix(),
+                                   parent_node.parents);
+            new_node.reduce_matrix(parent_node.get_city(), city, parent_node.getCost());
+            new_node.parents.push_back(parent_node.get_city());
+            if (new_node.getCost() / 2 <= upper_bound) {
+                stack.push(new_node);
+            }
         }
+//        if (represents_single_candidate && upper_bound > parent_node->getCost()) {
+//            lower_node = parent_node;
+//            upper_bound = parent_node->getCost();
+//        }
     }
 
-    auto result_path = lower_node->parents;
-    result_path.push_back(lower_node->get_city());
+    auto result_path = lower_node.parents;
+    result_path.push_back(lower_node.get_city());
     result_path.push_back(0);
 
     return new AlgorithmResultTO(upper_bound, result_path);

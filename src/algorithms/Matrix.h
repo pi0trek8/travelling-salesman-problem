@@ -8,11 +8,11 @@ using namespace std;
 
 class Matrix {
 private:
-    Matrix *parent;
-
     int city;
 
     int cost;
+
+    int visited_cities_mask = (1 << 0);
 
     vector<bool> visited_cities;
 
@@ -25,13 +25,22 @@ private:
     int reduce_rows_if_possible(int matrix_size);
 
 public:
+
+    Matrix();
+
     vector<int> parents;
+
+    bool has_city_been_visited(int to_city) {
+        return this->matrix[city][to_city] == -1;
+    }
 
     int getCost() const;
 
     const vector<vector<int>> &get_matrix() const;
 
-    Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix, vector<int> parents);
+    bool is_single_candidate();
+
+    Matrix(int city, const vector<vector<int>> &matrix, vector<int> parents);
 
     void print() const;
 
