@@ -14,6 +14,10 @@ public:
     AlgorithmResultTO *process() override;
 
     ~DFSBranchBound() override;
+
+    int nearestNeighborCost(const vector<vector<int>> &graph, vector<bool> &visited, int current);
+
+    int findNearestNeighborCost(const vector<vector<int>> &graph);
 };
 
 

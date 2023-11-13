@@ -12,6 +12,8 @@ private:
 
     int cost;
 
+    int tree_level;
+
     int visited_cities_mask = (1 << 0);
 
     vector<bool> visited_cities;
@@ -40,7 +42,7 @@ public:
 
     bool is_single_candidate();
 
-    Matrix(int city, const vector<vector<int>> &matrix, vector<int> parents);
+    Matrix(int city, const vector<vector<int>> &matrix, vector<int> parents, int tree_level);
 
     void print() const;
 
@@ -53,6 +55,8 @@ public:
     const vector<bool> &get_visited_cities() const;
 
     Matrix *get_parent();
+
+    int get_tree_level() const;
 };
 
 #endif //TRAVELLING_SALESMAN_PROBLEM_MATRIX_H

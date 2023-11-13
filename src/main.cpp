@@ -8,6 +8,7 @@
 #include "algorithms/DynamicProgramming.h"
 #include "timer/Timer.h"
 #include "ui/RandomGenerator.h"
+#include "file/FileReader.h"
 
 using namespace std;
 
