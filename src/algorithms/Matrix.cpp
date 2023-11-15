@@ -1,6 +1,4 @@
 #include <climits>
-#include <iomanip>
-#include <utility>
 #include "Matrix.h"
 
 void Matrix::perform_first_reduction() {
@@ -78,15 +76,6 @@ int Matrix::reduce_rows_if_possible(int matrix_size) {
     return reduction_cost;
 }
 
-void Matrix::print() const {
-    for (int i = 0; i < matrix.size(); i++) {
-        for (int j = 0; j < matrix.size(); j++) {
-            cout << setw(3) << matrix[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
 int Matrix::getCost() const {
     return cost;
 }
@@ -97,10 +86,6 @@ const vector<vector<int>> &Matrix::get_matrix() const {
 
 int Matrix::get_city() const {
     return city;
-}
-
-const vector<bool> &Matrix::get_visited_cities() const {
-    return visited_cities;
 }
 
 bool Matrix::is_single_candidate() {

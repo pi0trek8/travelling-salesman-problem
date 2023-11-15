@@ -18,16 +18,16 @@ private:
         }
     };
 
+    pair<int, std::vector<int>> nearest_neighbor_cost(const vector<vector<int>> &graph, vector<bool> &visited, int current);
+
+    pair<int, std::vector<int>> find_nearest_neighbor_result(const vector<vector<int>> &graph);
+
 public:
     explicit LCBranchAndBound(Graph *graph);
 
     AlgorithmResultTO *process() override;
 
     ~LCBranchAndBound() override;
-
-    int nearestNeighborCost(const vector<vector<int>> &graph, vector<bool> &visited, int current);
-
-    int findNearestNeighborCost(const vector<vector<int>> &graph);
 };
 
 

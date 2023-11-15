@@ -9,99 +9,92 @@ AlgorithmResultTO *DFSBranchBound::process() {
     int city_number = graph->get_city_number();
     auto matrix = graph->get_graph_as_vector();
 
-    std::stack<Matrix> stack;
-    auto parent_node = Matrix(0, matrix, vector<int>(), 0);
-    parent_node.perform_first_reduction();
+    std::stack<Matrix*> stack;
+    auto first_node = new Matrix(0, matrix, vector<int>(), 0);
+    first_node->perform_first_reduction();
 
-    stack.push(parent_node);
+    stack.push(first_node);
+    auto nearest_neighbor_result = find_nearest_neighbor_result(matrix);
 
-    Matrix lower_node;
-
-    int upper_bound = findNearestNeighborCost(matrix) + 1;
-    cout << upper_bound;
+    int upper_bound = nearest_neighbor_result.first;
+    vector<int> best_path = nearest_neighbor_result.second;
 
     while (!stack.empty()) {
-        parent_node = stack.top();
+        auto parent_node = stack.top();
         stack.pop();
 
-        if (parent_node.is_single_candidate()) {
-            if (upper_bound > parent_node.getCost()) {
-                cout << parent_node.get_city() << " with cost: " << parent_node.getCost() << endl;
-                lower_node = parent_node;
-                upper_bound = parent_node.getCost();
+        if (parent_node->get_tree_level() == city_number - 1) {
+            if (upper_bound > parent_node->getCost()) {
+                best_path = parent_node->parents;
+                best_path.push_back(parent_node->get_city());
+                upper_bound = parent_node->getCost();
             }
             continue;
         }
 
-        if (parent_node.getCost() < upper_bound) {
+        if (parent_node->getCost() < upper_bound) {
             for (int city = 0; city < city_number; ++city) {
-                if (city == parent_node.get_city() || parent_node.has_city_been_visited(city)) {
+                if (city == parent_node->get_city() || parent_node->has_city_been_visited(city)) {
                     continue;
                 }
-
-                auto new_node = Matrix(city, parent_node.get_matrix(),
-                                       parent_node.parents, parent_node.get_tree_level() + 1);
-                new_node.reduce_matrix(parent_node.get_city(), city, parent_node.getCost());
-                new_node.parents.push_back(parent_node.get_city());
-                if (new_node.getCost() <= upper_bound) {
+                auto new_node = new Matrix(city, parent_node->get_matrix(),
+                                           parent_node->parents, parent_node->get_tree_level() + 1);
+                new_node->reduce_matrix(parent_node->get_city(), city, parent_node->getCost());
+                new_node->parents.push_back(parent_node->get_city());
+                if (new_node->getCost() <= upper_bound) {
                     stack.push(new_node);
                 }
             }
         }
+        delete parent_node;
     }
+    best_path.push_back(0);
 
-    auto result_path = lower_node.parents;
-    result_path.push_back(lower_node.get_city());
-    result_path.push_back(0);
-
-    return new AlgorithmResultTO(upper_bound, result_path);
+    return new AlgorithmResultTO(upper_bound, best_path);
 }
 
-int DFSBranchBound::nearestNeighborCost(const vector<vector<int>> &graph, vector<bool> &visited, int current) {
-    int minDistance = INT_MAX;
-    int numNodes = graph.size();
+pair<int, std::vector<int>>
+DFSBranchBound::nearest_neighbor_cost(const vector<vector<int>> &graph, vector<bool> &visited, int current) {
+    int minimum_cost = INT_MAX;
+    int city_number = graph.size();
+    int nearest_neighbor = -1;
 
-    for (int i = 0; i < numNodes; ++i) {
-        if (graph[current][i] < minDistance && !visited[i]) {
-            minDistance = graph[current][i];
+    for (int i = 0; i < city_number; ++i) {
+        if (graph[current][i] < minimum_cost && !visited[i]) {
+            minimum_cost = graph[current][i];
+            nearest_neighbor = i;
         }
     }
-    return minDistance;
+
+    return std::make_pair(minimum_cost, vector<int>{current, nearest_neighbor});
+
 }
 
-int DFSBranchBound::findNearestNeighborCost(const vector<vector<int>> &graph) {
-    int numNodes = graph.size();
+pair<int, vector<int>> DFSBranchBound::find_nearest_neighbor_result(const vector<vector<int>> &graph) {
+    int city_number = graph.size();
 
-    vector<bool> visited(numNodes, false);
-
+    vector<bool> visited(city_number, false);
     int current = 0;
     visited[current] = true;
 
-    int totalDistance = 0;
+    int total_cost = 0;
+    vector<int> best_path;
 
-    for (int i = 0; i < numNodes - 1; ++i) {
-        int nearestCost = nearestNeighborCost(graph, visited, current);
-        totalDistance += nearestCost;
+    for (int i = 0; i < city_number - 1; ++i) {
+        pair<int, vector<int>> best_neighbor = nearest_neighbor_cost(graph, visited, current);
+        total_cost += best_neighbor.first;
 
-        int nearest = INT_MAX;
-        for (int j = 0; j < numNodes; ++j) {
-            if (graph[current][j] == nearestCost && !visited[j]) {
-                nearest = j;
-                break;
-            }
-        }
-
-        if (nearest == INT_MAX) {
-            break;
-        }
+        int nearest = best_neighbor.second.back();
 
         visited[nearest] = true;
         current = nearest;
+        best_path.insert(best_path.end(), best_neighbor.second.begin(), best_neighbor.second.end() - 1);
     }
 
-    totalDistance += graph[current][0];
+    total_cost += graph[current][0];
+    best_path.push_back(0);
 
-    return totalDistance;
+    return make_pair(total_cost, best_path);
 }
 
 DFSBranchBound::~DFSBranchBound() = default;
