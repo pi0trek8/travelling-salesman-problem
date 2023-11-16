@@ -14,14 +14,9 @@ using namespace std;
 
 void automated_tests(const vector<string> &arguments);
 
-void time_limit_thread();
-
 int main(int argc, char *argv[]) {
 
 //    MainMenu::create_menu();
-
-//    thread countdown(time_limit_thread);
-//    thread count(print_thread);
 
     vector<string> arguments;
     for (int i = 0; i < argc; ++i) {
@@ -38,9 +33,7 @@ void automated_tests(const vector<string> &arguments) {
     FileReader fileReader;
 
     float whole_time = 0.0;
-
-    if(arguments[2].ends_with(".txt")) {
-        for (int i = 0; i < 10; ++i) {
+    if (arguments[2].ends_with(".txt")) {
         auto graph = fileReader.read_problem_from_file<Graph>(arguments[2]);
 
         if (arguments[1] == "Brute Force") {
@@ -60,32 +53,29 @@ void automated_tests(const vector<string> &arguments) {
         timer.time_stop();
         whole_time += timer.elapsed_time_in_seconds();
         delete graph;
-        }
     } else {
-        for (int i = 0; i < 10; ++i) {
-            auto graph = randomGenerator->generate_random(stoi(arguments[2]));
-            if (arguments[1] == "Brute Force") {
-                algorithm = new BruteForce2(graph);
-            } else if (arguments[1] == "LC Branch and Bound") {
-                algorithm = new LCBranchAndBound(graph);
+        auto graph = randomGenerator->generate_random(stoi(arguments[2]));
+        if (arguments[1] == "Brute Force") {
+            algorithm = new BruteForce2(graph);
+        } else if (arguments[1] == "LC Branch and Bound") {
+            algorithm = new LCBranchAndBound(graph);
 
-            } else if (arguments[1] == "DFS Branch and Bound") {
-                algorithm = new DFSBranchBound(graph);
+        } else if (arguments[1] == "DFS Branch and Bound") {
+            algorithm = new DFSBranchBound(graph);
 
-            } else if (arguments[1] == "Dynamic Programming") {
-                algorithm = new DynamicProgramming(graph);
-            }
-
-
-            timer.time_start();
-            algorithm->process();
-            timer.time_stop();
-            whole_time += timer.elapsed_time_in_seconds();
-            delete graph;
+        } else if (arguments[1] == "Dynamic Programming") {
+            algorithm = new DynamicProgramming(graph);
         }
+
+
+        timer.time_start();
+        auto result = algorithm->process();
+        timer.time_stop();
+        whole_time += timer.elapsed_time_in_seconds();
+        delete graph;
     }
 
-    cout << whole_time / 10.0;
+    cout << whole_time;
     delete randomGenerator;
     delete algorithm;
 }

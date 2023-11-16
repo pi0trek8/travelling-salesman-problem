@@ -4,6 +4,7 @@ import sys
 import plot
 import csv
 import time
+import threading
 
 
 def create_file(output_file):
@@ -11,8 +12,8 @@ def create_file(output_file):
     if os.path.exists(file):
         os.remove(file)
     f = open(f"{output_file}.csv", 'a+')
-    for file in files:
-        f.write(f'{file}\n')
+    for city in cities:
+        f.write(f'{city}\n')
 
 
 def add_column_to_csv(csv_file, new_column_name, new_column_data):
@@ -38,10 +39,14 @@ def collect_data_single_algorithm():
         create_file(file_name)
         output = []
         for city in cities:
-            command = [executable_path, alg, city]
-            result = subprocess.run(command, capture_output=True, text=True)
-            output.append(result.stdout)
-            print(result)
+            average_time: float = 0.0
+            for i in range(0, 10):
+                command = [executable_path, alg, city]
+                result = subprocess.run(command, capture_output=True, text=True)
+                average_time += float(result.stdout)
+                print(result)
+            output.append(str(average_time/10.0))
+
         add_column_to_csv(f'{file_name}.csv', alg, output)
         plot.plot(f"{file_name}.csv")
 
@@ -62,30 +67,104 @@ def collect_data_from_files():
         plot.plot(f"{file_name}.csv")
 
 
+def run_algorithm(executable_path, alg, city, output, lock, stop_flag):
+    command = [executable_path, alg, city]
+    result = subprocess.run(command, capture_output=True, text=True)
+    print(result)
+
+    with lock:
+        if result.stdout != '':
+            output[0] += float(result.stdout)
+            stop_flag.set()
+        else:
+            output[0] += 300
+            output[1] += 1
+    
+
+def bb_collect_data():
+    for alg in algorithms:
+        file_name = alg.replace(' ', '_')
+        create_file(file_name)
+        output_time = []
+        output_percentage = []
+        lock = threading.Lock()
+
+        def worker(city, output):
+            nonlocal lock
+            stop_flag = threading.Event()
+            t = threading.Thread(target=run_algorithm, args=(executable_path, alg, city, output, lock, stop_flag,))
+            t.start()
+            total_time = 0
+            total_sleep_time = 60 * 4
+
+            while total_time < total_sleep_time and not stop_flag.is_set():
+                time.sleep(0.001)
+                total_time += 0.0015
+
+            if not stop_flag.is_set():
+                os.system("taskkill /f /im travelling-salesman-problem.exe") 
+                print("Process killed due to timeout.")
+
+        for city in cities:
+            output = [0.00000, 0]
+            for i in range(0, 10):
+                worker(city, output=output)
+
+            output_time.append(output[0] / 10.00000)  
+            output_percentage.append((output[1] / 10) * 100)  
+
+        add_column_to_csv(f'{file_name}.csv', alg, output_time)
+        add_column_to_csv(f'{file_name}.csv', alg, output_percentage)
+
+
 executable_path = (
-    R"C:\Users\Admin\Desktop\travelling-salesman-problem\cmake-build-release\travelling-salesman-problem.exe")
+    R"../testing-module/travelling-salesman-problem.exe")
 
 cities = [
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
     "32",
     "33",
     "34",
     "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
 ]
 
 files = [
     "tsp_6_1.txt",
-    "tsp_6_2.txt",
-    "tsp_10.txt",
-    "tsp_12.txt",
-    "tsp_13.txt",
-    "tsp_14.txt",
-    "tsp_15.txt",
-    "tsp_17_1.txt",
-    "tsp_18_1.txt",
-    "tsp_19_1.txt",
-    "tsp_20_1.txt"
 ]
 
-algorithms = ['LC Branch and Bound', 'DFS Branch and Bound', 'Dynamic Programming', 'Brute Force']
+algorithms = ['DFS Branch and Bound', 'LC Branch and Bound']
+
+
 if __name__ == '__main__':
-    collect_data_from_files()
+    bb_collect_data()

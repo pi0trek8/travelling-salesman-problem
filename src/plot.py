@@ -23,43 +23,41 @@ def plot(file: str, directory=''):
     # plt.show()
     if not os.path.exists('img'):
         os.mkdir('img')
-
     fig.savefig(f'img/{file.removesuffix(".csv")}.png', bbox_inches='tight')
 
 
 def plot_multiline(file: str):
     data = pd.read_csv(file, sep=',')
+    fileHeader = data.columns[0]
     columns = data.columns[1:]
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(15, 8))
+
     for column in columns:
-        plt.plot(data['num'], data[column], marker='.', label=column, markersize=7)
+        plt.plot(data[fileHeader], data[column], label=column, marker='.', markersize=7)
 
-    # Set plot title and labels
-    plt.title('Graph')
-    plt.xlabel('num')
-    plt.ylabel('Values')
-
-    # Add a legend
+    plt.title('Time taken vs files - tsp')
     plt.legend()
-    plt.xlabel('Number of cities [n]')
+    plt.xlabel('Files with number of cities [n]')
     plt.ylabel('Time (seconds)')
-    # Show the plot
+
+    # Set a subset of ticks for better readability
+    plt.xticks(rotation='vertical')
+
+    plt.yscale('log')
     fig = plt.gcf()
-    # plt.show()
+
     if not os.path.exists('img'):
         os.mkdir('img')
 
     fig.savefig(f'img/{file.removesuffix(".csv")}.png', bbox_inches='tight')
 
 
+
 def get_csv_files(directory=''):
-    # if not os.path.exists(directory):
-    #     print(f"Directory {directory} does not exist")
-    #     return []
     return [f for f in os.listdir() if f.endswith('.csv')]
 
-# file = "C:\\Users\\Admin\\Desktop\\dikstra\\mst_list.csv"
-# plot("Brute_Force.csv")
 
-# for i in range(15, 33):
+# plot_multiline(R"files.csv")
+#
+# for i in range(6, 42):
 #     print(f'"{i}",')
