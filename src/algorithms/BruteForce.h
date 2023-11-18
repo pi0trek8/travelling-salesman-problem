@@ -2,12 +2,7 @@
 #define TRAVELLING_SALESMAN_PROBLEM_BRUTEFORCE_H
 
 
-#include "../list/List.h"
-#include "../graph/Graph.h"
-#include "../array/Array.h"
-#include "../TO/AlgorithmResultTO.h"
 #include "Algorithm.h"
-#include <vector>
 
 class BruteForce : public Algorithm {
 private:
