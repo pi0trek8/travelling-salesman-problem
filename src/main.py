@@ -4,7 +4,9 @@ import sys
 import plot
 import csv
 import time
+import psutil
 import threading
+import signal
 
 
 def create_file(output_file):
@@ -98,6 +100,11 @@ def bb_collect_data():
             total_sleep_time = 60 * 4
 
             while total_time < total_sleep_time and not stop_flag.is_set():
+                for process in psutil.process_iter(['pid', 'name', 'memory_info']):
+                    if process.info['name'] == 'travelling-salesman-problem.exe' and process.info['memory_info'].rss > 1000 * 1024 * 1024:
+                        print(f"Process travelling-salesman-problem.exe (PID {process.info['pid']}) exceeds memory limit. Killing process...")
+                        os.kill(process.info['pid'], signal.SIGTERM)
+                        print("Process killed.")
                 time.sleep(0.001)
                 total_time += 0.0015
 
