@@ -4,12 +4,11 @@
 #include "../graph/Graph.h"
 #include "../file/FileReader.h"
 #include "../timer/Timer.h"
-#include "../algorithms/BruteForce.h"
 #include "../algorithms/LCBranchAndBound.h"
 #include "../algorithms/DFSBranchBound.h"
 #include "RandomGenerator.h"
 #include "../algorithms/DynamicProgramming.h"
-#include "../algorithms/BruteForce2.h"
+#include "../algorithms/BruteForce.h"
 #include "MenuUtils.h"
 
 void MainMenu::create_menu() {
@@ -68,7 +67,7 @@ void MainMenu::create_menu() {
                     ConsoleHelper::press_key_to_continue();
                     break;
                 }
-                algorithm = new BruteForce2(graph);
+                algorithm = new BruteForce(graph);
                 cout << "Algorithm Brute force" << endl;
                 timer.time_start();
                 auto result = algorithm->process();

@@ -8,13 +8,11 @@ using namespace std;
 
 class Matrix {
 private:
-    Matrix *parent;
-
     int city;
 
     int cost;
 
-    vector<bool> visited_cities;
+    int tree_level;
 
     vector<vector<int>> matrix;
 
@@ -25,15 +23,21 @@ private:
     int reduce_rows_if_possible(int matrix_size);
 
 public:
+    Matrix();
+
     vector<int> parents;
+
+    bool has_city_been_visited(int to_city) {
+        return this->matrix[city][to_city] == -1;
+    }
 
     int getCost() const;
 
     const vector<vector<int>> &get_matrix() const;
 
-    Matrix(Matrix *parent, int city, const vector<bool> &visitedCities, const vector<vector<int>> &matrix, vector<int> parents);
+    bool is_single_candidate();
 
-    void print() const;
+    Matrix(int city, const vector<vector<int>> &matrix, vector<int> parents, int tree_level);
 
     void reduce_matrix(int from, int to, int parent_cost);
 
@@ -41,9 +45,7 @@ public:
 
     void perform_first_reduction();
 
-    const vector<bool> &get_visited_cities() const;
-
-    Matrix *get_parent();
+    int get_tree_level() const;
 };
 
 #endif //TRAVELLING_SALESMAN_PROBLEM_MATRIX_H

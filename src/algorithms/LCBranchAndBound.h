@@ -13,10 +13,14 @@ private:
     Graph *graph;
 
     struct CompareMatrices {
-        bool operator()(const Matrix *first_matrix, const Matrix *second_matrix) {
-            return first_matrix->getCost() >= second_matrix->getCost();
+        bool operator()(const Matrix first_matrix, const Matrix second_matrix) {
+            return first_matrix.getCost() >= second_matrix.getCost();
         }
     };
+
+    pair<int, std::vector<int>> nearest_neighbor_cost(const vector<vector<int>> &graph, vector<bool> &visited, int current);
+
+    pair<int, std::vector<int>> find_nearest_neighbor_result(const vector<vector<int>> &graph);
 
 public:
     explicit LCBranchAndBound(Graph *graph);

@@ -2,6 +2,7 @@
 #define TRAVELLING_SALESMAN_PROBLEM_ALGORITHM_H
 
 
+#include <atomic>
 #include "../TO/AlgorithmResultTO.h"
 #include "../graph/Graph.h"
 
